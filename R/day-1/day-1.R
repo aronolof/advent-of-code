@@ -4,20 +4,16 @@
 
 # Part 1 solution
 
-sum(floor(scan("input.txt")/3-2))
+sum(scan("input.txt") %/% 3 - 2)
 
 # Part 2 solution
 
 sum(sapply(scan("input.txt"),
            function(x) {
-             fuel <- floor(x / 3) - 2
+             fuel <- x %/% 3 - 2
              if (fuel <= 0) {
                return(0)
              } else {
                return(fuel + Recall(fuel))
              }
            }))
-
-
-
-
