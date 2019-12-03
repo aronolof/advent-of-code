@@ -1,4 +1,4 @@
-# Description
+# --- Day 2: 1202 Program Alarm ---
 
 input <- scan("input-day-2.txt", sep = ",")
 
