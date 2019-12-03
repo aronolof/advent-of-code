@@ -4,7 +4,7 @@
 
 # Part 1 solution
 
-sum(scan("input.txt") %/% 3 - 2)
+sum(scan("input/input-day-1.txt") %/% 3 - 2)
 
 # Part 2 solution
 
