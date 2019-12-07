@@ -1,6 +1,6 @@
 # --- Day 2: 1202 Program Alarm ---
 
-input <- scan("input-day-2.txt", sep = ",")
+input <- scan("input/input-day-2.txt", sep = ",")
 
 # Part 1
 run_prog <- function(input, replace1, replace2) {
