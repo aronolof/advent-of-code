@@ -1,11 +1,8 @@
 # --- Day 2: 1202 Program Alarm ---
 
-input <- scan("input/input-day-2.txt", sep = ",")
-
 # Part 1
-run_prog <- function(input, replace1, replace2) {
-  prog <- input
-  prog[2:3] <- c(replace1, replace2)
+run_prog <- function(prog, r1, r2) {
+  prog[2:3] <- c(r1, r2)
   for (i in seq(1, length(prog), 4)) {
     if(prog[i] == 99) {
       return(prog[1])
@@ -15,20 +12,17 @@ run_prog <- function(input, replace1, replace2) {
   }
 }
 
-run_prog(input, 12, 2)
+run_prog(scan("input/2.txt", sep = ","), 12, 2)
 
 # Part 2
-for (noun in 0:99) {
-  for (verb in 0:99) {
-    if (run_prog(input, noun, verb) == 19690720) {
-      print(sum(c(noun, verb)* c(100, 1)))
-      break
-    }
-  }
-}
+grid <- expand.grid(noun = 0:99, verb = 0:99)
+sum(grid[which(mapply(run_prog, list(scan("input/2.txt", sep = ",")), grid$noun, grid$verb) == 19690720),] * c(100, 1))
 
-# Alternatively:
-#grid <- expand.grid(noun = 0:99, verb = 0:99)
-#sum(grid[which(mapply(run_prog, list(input), grid$noun, grid$verb) == 19690720),] * c(100, 1))
-
-
+# Bonus plot
+library(tidyverse)
+expand.grid(noun = 0:99, verb = 0:99) %>%
+  mutate(return = mapply(run_prog, list(scan("input/2.txt", sep = ",")), noun, verb)) %>%
+  mutate(return = abs(return-19690720)) %>%
+  ggplot(aes(x=noun, y = verb, fill = return)) +
+  geom_tile() +
+  theme(legend.position = "bottom")

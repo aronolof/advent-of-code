@@ -1,20 +1,20 @@
 # --- Day 6: Universal Orbit Map ---
 
 library(tidyverse)
-input <- read_delim("input/input-day-6.txt", delim = ")", col_names = paste(1:2))
+input <- read_delim("input/6.txt", delim = ")", col_names = paste(1:2))
 df <- filter(input, `1` == "COM")
 
 while(!all(is.na(df[[ncol(df)]]))) {
   df <- left_join(df, setNames(input, ncol(df) + 0:1))
 }
 
-# --- Part One ---
+# Part 1
 df %>%
   pivot_longer(-1) %>%
   filter(!is.na(value), !duplicated(value)) %>%
   summarise(sum(as.numeric(name) - 1))
 
-# --- Part Two ---
+# Part 2
 df %>%
   filter_all(any_vars(. == "YOU" | . == "SAN")) %>% 
   {as_tibble(t(.))} %>%

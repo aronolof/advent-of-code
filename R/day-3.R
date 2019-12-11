@@ -1,8 +1,6 @@
 # --- Day 3: Crossed Wires ---
 
-library(dplyr)
-library(tidyr)
-library(readr)
+library(tidyverse)
 
 step_coord <- function(x, dirs = c("L", "R")) {
   dir = substr(x, 1, 1)
@@ -25,39 +23,29 @@ wire_expand <- function(df, column) {
     select(x, y)
 }
 
-input <- read_delim("input/input-day-3.txt",
-                           delim = ",",
-                           col_names = FALSE) %>%
+# Part 1
+input <- read_delim("input/3.txt",
+                    delim = ",",
+                    col_names = FALSE) %>%
   t() %>%
   as_tibble() %>%
   setNames(paste0("w", 1:2))
 
-# Part 1
-inner_join(
-  wire_expand(input, "w1"),
-  wire_expand(input, "w2")
-) %>%
+inner_join(wire_expand(input, "w1"),
+           wire_expand(input, "w2")) %>%
   mutate(dist = abs(x) + abs(y)) %>%
-  arrange(dist) %>%
-  head(1)
+  filter(dist == min(abs(x) + abs(y)))
 
 # Part 2
 inner_join(
   mutate(wire_expand(input, "w1"),
-         steps_w1 = row_number() + abs(first(x)) + abs(first(y)) - 1), 
-  mutate(wire_expand(input, "w2"),
-         steps_w2 = row_number() + abs(first(x)) + abs(first(y)) - 1)
-) %>%
+         steps_w1 = row_number() + abs(first(x)) + abs(first(y)) - 1),
+  mutate(wire_expand(input, "w2"), steps_w2 = row_number() + abs(first(x)) + abs(first(y)) - 1)) %>%
   mutate(total_steps = steps_w1 + steps_w2) %>%
   arrange(total_steps) %>%
   head(1)
 
-
-
-
 # Bonus chart!
-
-library(ggplot2)
 
 input %>%
   mutate_at(c("w1", "w2"), list(
@@ -75,5 +63,5 @@ input %>%
   theme_void() +
   theme(plot.background = element_rect(fill = "black"))
   
-ggsave("R/day-3-bonus-chart.png", height = 10, width = 10)
+ggsave("output/day-3-bonus-chart.png", height = 10, width = 10)
 

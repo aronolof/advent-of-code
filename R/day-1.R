@@ -1,12 +1,10 @@
 # --- Day 1: The Tyranny of the Rocket Equation ---
 
-# Problem: https://adventofcode.com/2019/day/1
-
-# Part 1 solution
+# Part 1
 
 sum(scan("input/input-day-1.txt") %/% 3 - 2)
 
-# Part 2 solution
+# Part 2
 
 sum(sapply(scan("input.txt"),
            function(x) {
