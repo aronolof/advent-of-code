@@ -1,3 +1,5 @@
+# --- Day 7: Amplification Circuit ---
+
 library(tidyverse)
 
 # My ol' trusty Intcode computer
