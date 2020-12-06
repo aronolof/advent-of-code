@@ -1,4 +1,4 @@
-input_data = [int(x) for x in open('input/input-day-2.txt', 'r').read().split(',')]
+input_data = [int(x) for x in open('2019/input/input-02.txt', 'r').read().split(',')]
 
 # part 1:
 def runProgram(code, replace1, replace2):
@@ -19,6 +19,3 @@ for noun in range(0, 100):
     for verb in range(0, 100):
         if runProgram(input_data.copy(), noun, verb) == 19690720:
             print(100*noun+verb)
-            
-            
-            

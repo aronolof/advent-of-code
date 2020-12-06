@@ -1,4 +1,4 @@
-input_data = [int(x) for x in open('input/input-day-1.txt', 'r').read().split()]
+input_data = [int(x) for x in open('2019/input/input-01.txt', 'r').read().split()]
     
 # Part 1
 get_fuel = lambda x: int(x)//3-2
