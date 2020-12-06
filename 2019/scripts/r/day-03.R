@@ -24,7 +24,7 @@ wire_expand <- function(df, column) {
 }
 
 # Part 1
-input <- read_delim("input/3.txt",
+input <- read_delim("2019/input/input-03.txt",
                     delim = ",",
                     col_names = FALSE) %>%
   t() %>%
@@ -63,5 +63,5 @@ input %>%
   theme_void() +
   theme(plot.background = element_rect(fill = "black"))
   
-ggsave("output/day-3-bonus-chart.png", height = 10, width = 10)
+ggsave("2019/plots/day-3-bonus-chart.png", height = 10, width = 10)
 

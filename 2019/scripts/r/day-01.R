@@ -1,12 +1,14 @@
 # --- Day 1: The Tyranny of the Rocket Equation ---
 
+input <- scan("2019/input/input-01.txt")
+
 # Part 1
 
-sum(scan("input/input-day-1.txt") %/% 3 - 2)
+sum(input %/% 3 - 2)
 
 # Part 2
 
-sum(sapply(scan("input.txt"),
+sum(sapply(input,
            function(x) {
              fuel <- x %/% 3 - 2
              if (fuel <= 0) {

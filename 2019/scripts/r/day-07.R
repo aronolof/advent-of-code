@@ -56,7 +56,7 @@ run_prog <- function(settings) {
   }
 }
 
-prog <- scan("input/7.txt", sep = ",")
+prog <- scan("2019/input/input-07.txt", sep = ",")
 
 # Part 1
 run_prog_outer <- function(arg1, arg2) {

@@ -2,8 +2,10 @@
 
 library(tidyverse)
 
+input <- scan("2019/input/input-08.txt",  what = "character")
+  
 # Part 1
-tibble(input = as.numeric(str_split(scan("input/8.txt",  what = "character"), "", simplify = TRUE))) %>%
+tibble(input = as.numeric(str_split(input, "", simplify = TRUE))) %>%
   group_by(layer = (row_number() - 1) %/% 150) %>% 
   count(input) %>%
   pivot_wider(names_from = input, values_from = n) %>%
@@ -12,7 +14,7 @@ tibble(input = as.numeric(str_split(scan("input/8.txt",  what = "character"), ""
   {prod(.$`1`, .$`2`)}
 
 # Part 2
-tibble(input = as.numeric(str_split(scan("input/8.txt",  what = "character"), "", simplify = TRUE))) %>%
+tibble(input = as.numeric(str_split(input, "", simplify = TRUE))) %>%
   group_by(n = (row_number() - 1) %% 150) %>%
   filter(input != 2) %>%
   summarise(input = first(input)) %>%

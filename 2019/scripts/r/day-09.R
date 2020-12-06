@@ -2,7 +2,10 @@
 
 library(tidyverse)
 
-asteroid_pairs <- scan("input/10.txt",  what = "character") %>% str_split("", simplify = TRUE) %>%
+input <- scan("2019/input/input-10.txt",  what = "character")
+
+asteroid_pairs <- input %>% 
+  str_split("", simplify = TRUE) %>%
   {as_tibble(cbind(id = c(.), x=c(col(.)-1), y=c(row(.)-1)))} %>%
   filter(id == "#") %>%
   mutate(dummy = 1, id = row_number()) %>%

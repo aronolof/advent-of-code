@@ -1,7 +1,7 @@
 # --- Day 6: Universal Orbit Map ---
 
 library(tidyverse)
-input <- read_delim("input/6.txt", delim = ")", col_names = paste(1:2))
+input <- read_delim("2019/input/input-06.txt", delim = ")", col_names = paste(1:2))
 df <- filter(input, `1` == "COM")
 
 while(!all(is.na(df[[ncol(df)]]))) {

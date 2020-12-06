@@ -48,8 +48,11 @@ run_prog <- function(prog, input) {
   }
 }
 
+
+input <- scan("2019/input/input-05.txt", sep = ",")
+
 # Part 1
-run_prog(scan("input/5.txt", sep = ","), 1)
+run_prog(input, 1)
 
 # Part 2
-run_prog(scan("input/5.txt", sep = ","), 5)
+run_prog(input, 5)
