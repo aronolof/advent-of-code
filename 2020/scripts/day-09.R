@@ -22,13 +22,3 @@ for(i in seq(nrow(search_table_2))) {
     }
 }
 ans_2
-
-
-
-
-
-
-
-
-
-
