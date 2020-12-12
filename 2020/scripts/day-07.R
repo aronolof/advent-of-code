@@ -14,7 +14,7 @@ list_bags <- function(x) {
   }
 }
 
-length(unique(unlist(sapply(get_matches, list_bags))))
+length(unique(unlist(list_bags("shiny gold"))))-1
 
 # Part 2
 count_bags <- function(x) {
