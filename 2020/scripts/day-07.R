@@ -30,6 +30,3 @@ count_bags <- function(x) {
 }
 
 count_bags("shiny gold")
-
-
-
