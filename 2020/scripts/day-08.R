@@ -27,10 +27,3 @@ programs <- lapply(which(input$V1 %in% c('jmp', 'nop')), function(x) {
 })
 
 programs[[which(sapply(programs, function(x) x[[2]] == 0))]][1]
-
-
-
-
-
-
-
