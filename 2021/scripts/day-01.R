@@ -6,8 +6,5 @@ input <- scan("2021/input/input-01.txt")
 sum(diff(input) > 0)
 
 # Part 2
-seq(length(input)-2) |>
-  sapply(\(i) sum(input[i:(i+2)])) |>
-  diff() |>
-  (`>`)(0) |>
-  sum()
+sum(diff(sapply(seq(length(input)-2), \(i) sum(input[i:(i+2)]))) > 0)
+    
