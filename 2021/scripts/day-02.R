@@ -1,6 +1,6 @@
 # --- Day 2: Dive! ---
 
-input <- read.delim("2021/input/input-02.txt", sep = ' ', header = FALSE)
+input <- read.table("2021/input/input-02.txt")
 
 # Part 1
 prod(aggregate(input$V2 * ifelse(input$V1 == 'up', -1, 1), by=list(input$V1 == 'forward'), FUN=sum)$x)
