@@ -1,29 +1,20 @@
 # --- Day 6: Lanternfish ---
 
+options(scipen = 999)
+
 input <- scan('2021/input/input-06.txt', sep = ',')
 
 # Part 1
 simulation <- function(days) {
-  state <- table(factor(input, levels = 0:9))
+  state <- as.double(table(factor(input, levels = 0:8)))
   
   for(i in seq(days)) {
-    state[c(8, 10)] <- state[1] + c(state[8], 0)
-    state[1:9] <- state[2:10]
+    state <- c(state[2:7], state[8] + state[1], state[9], state[1])
   }
-  state[1:9]
+  sum(state)
 }
 
-simulation(80) |> sum()
+simulation(80)
 
 # Part 2
-# simulation(256) |> sum() # Does not work
-# bit64::as.integer64(as.vector(simulation(256))) |> sum() # The easy solution
-
-# The 32 bit way
-digit_sum <- apply(matrix(as.numeric(unlist(strsplit(as.character(simulation(256)), ''))), ncol = 9), 1, sum)
-
-for(j in rev(seq(digit_sum)[-1])) {
-  digit_sum[c(j-1, j)] <- c(digit_sum[j-1] + digit_sum[j]%/%10, digit_sum[j]%%10)
-}
-
-paste(digit_sum, collapse='')
+simulation(256) 
