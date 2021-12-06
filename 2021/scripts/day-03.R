@@ -4,7 +4,7 @@ input <- scan('2021/input/input-03.txt', what = 'character')
 
 # Part 1
 sapply(1:12, \(i) names(sort(table(sapply(strsplit(input, ''), "[[", i)))[2])) |>
-  (\(x) prod(strtoi(paste(x, collapse = "") , 2), strtoi(paste(as.numeric(x == '0'), collapse = "") , 2)))()
+  (\(x) prod(strtoi(paste(x, collapse = ''), 2), strtoi(paste(as.numeric(x == '0'), collapse = ''), 2)))()
 
 # Part 2
 oxy <- matrix(unlist(strsplit(input, '')), ncol = 12, byrow = TRUE)
