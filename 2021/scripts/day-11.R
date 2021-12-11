@@ -2,36 +2,38 @@
 
 input <- apply(Reduce(rbind, strsplit(readLines('2021/input/input-11.txt'), '')), 2, as.numeric)
 
-state <- input
-flashes <- 0
-prop_flashing <- c()
-
-for (i in 1:300) {
-  state <- (state + 1)%%10
+# Part 1
+next_step <- function(state) {
+  octopi <- (state$octopi + 1)%%10
   
-  while(sum(state == 0) != 0) {
-    padding <- cbind(10, rbind(10, state, 10), 10)
+  while(sum(octopi == 0) != 0) {
+    padded_octopi <- cbind(10, rbind(10, octopi, 10), 10)
     
-    neighbors <- mapply(
-      \(i, j) padding[(2:11)+i, (2:11)+j] == 0,
-      i = rep(-1:1, each = 3)[-5],
-      j = rep(-1:1, 3)[-5],
-      SIMPLIFY = FALSE
-    ) |>
-      (\(x) Reduce(`+`, x))()
-    state[state == 0] <- state[state == 0] - 1
+    neighbor_flash <- mapply(\(i, j) padded_octopi[(2:11) + i, (2:11) + j] == 0,
+                             i = rep(-1:1, 3)[-5],
+                             j = rep(-1:1, each = 3)[-5],
+                             SIMPLIFY = FALSE
+    )
     
-    state[state > 0] <- (state[state > 0] + neighbors[state > 0])
-    state[state > 9] <- 0
+    octopi[octopi == 0] <- octopi[octopi == 0] - 1
+    octopi[octopi > 0] <- pmin((octopi[octopi > 0] + Reduce(`+`, neighbor_flash)[octopi > 0]), 10) %% 10
   }
+  octopi[octopi < 0] <- 0
   
-  flashes <- flashes + sum(state < 0)
-  prop_flashing[i] <- mean(state < 0)
-  state[state < 0] <- 0
-  
-
-  
+  list(octopi = octopi,
+       flashes = state$flashes + sum(octopi == 0),
+       current_flashes = sum(octopi == 0),
+       steps = state$steps + 1)
 }
-state
-flashes
-which(prop_flashing == 1)[1]
+
+state <- list(octopi = input,
+                      flashes = 0,
+                      current_flashes = 0,
+                      steps = 0)
+
+for(i in 1:100) state <- next_step(state)
+state$flashes
+
+# Part 2
+while(state$current_flashes != 100) state <- next_step(state)
+state$step
