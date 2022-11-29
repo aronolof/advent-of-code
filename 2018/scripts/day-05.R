@@ -16,16 +16,6 @@ reaction <- function(input) {
 }
 reaction(input)
 
-# Part 2 apply
-sapply(1:26, \(x) {
-  reaction(gsub(paste(letters[x], LETTERS[x], sep = '|'), '', input))
-  }) |>
+# Part 2
+sapply(1:26, \(x) reaction(gsub(paste(letters[x], LETTERS[x], sep = '|'), '', input))) |>
   min()
-
-# Part 2 loop
-shortest <- c()
-for(x in 1:26) {
-  shortest[x] <- reaction(gsub(paste(letters[x], LETTERS[x], sep = '|'), '', input))
-  print(shortest[x])
-}
-min(shortest)
