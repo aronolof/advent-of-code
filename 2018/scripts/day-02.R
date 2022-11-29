@@ -1,5 +1,5 @@
 # --- Day 2: Inventory Management System ---
-input = readLines('2018/input/input-02')
+input <- readLines('2018/input/input-02')
 
 # Part 1
 prod(sapply(2:3, \(i) sum(sapply(input, \(x) max(table(strsplit(x, '')) == i)))))
