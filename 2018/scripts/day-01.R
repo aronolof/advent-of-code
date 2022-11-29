@@ -1,4 +1,4 @@
-# Input
+# --- Day 1: Chronal Calibration ---
 input = as.numeric(readLines('2018/input/input-01'))
 
 # Part 1
