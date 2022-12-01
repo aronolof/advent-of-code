@@ -1,31 +1,15 @@
 # --- Day 1: Calorie Counting ---
-
 input = readlines("2022/data/input01.txt")
 
-function part1(input)
-    sums = Vector{Int}([0])
+function per_elf_sums(input)
+    sums = [0]
     for x in input
-        if x == ""
-            push!(sums, 0)
-        else
-            sums[end] += parse(Int, x)
-        end
+        x == "" ? push!(sums, 0) : sums[end] += parse(Int, x)
     end
-    return(maximum(sums))
+    sums
 end
 
-println("Answer 1: ", part1(input))
+sums = per_elf_sums(input)
 
-function part2(input)
-    sums = Vector{Int}([0])
-    for x in input
-        if x == ""
-            push!(sums, 0)
-        else
-            sums[end] += parse(Int, x)
-        end
-    end
-    return(sum(sort(sums, rev=true)[1:3]))
-end
-
-println("Answer 2: ", part2(input))
+println("Answer 1: ", maximum(sums))
+println("Answer 2: ", sum(sort(sums, rev=true)[1:3]))
