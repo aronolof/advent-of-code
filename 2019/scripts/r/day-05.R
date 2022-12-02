@@ -1,7 +1,5 @@
 # --- Day 5: Sunny with a Chance of Asteroids ---
 
-library(stringr)
-
 # My brand new Intcode computer
 run_prog <- function(prog, input) {
   i <- 1
@@ -9,9 +7,7 @@ run_prog <- function(prog, input) {
   while(i <= length(prog)){
     
     op <- prog[i] %% 100
-    mode <- rev(as.numeric(str_split(str_pad((prog[i] %/% 100), width = 3, pad = 0),
-                                     "",
-                                     simplify = TRUE)))
+    mode <- sapply(2:4, \(x) (prog[i]%%(10^(x+1)))%/%(10^x))
     
     par <- function(n) {
       ifelse(mode[n], prog[i + n], prog[prog[i + n] + 1])
@@ -47,7 +43,6 @@ run_prog <- function(prog, input) {
     }
   }
 }
-
 
 input <- scan("2019/input/input-05.txt", sep = ",")
 
