@@ -22,7 +22,3 @@ apply(input, 1, \(x) {
     c(0, 3, 6)[strategy] + choice
   }) |>
   sum()
-
-
-
-
