@@ -1,8 +1,13 @@
 # --- Day 3: Rucksack Reorganization ---
-items <- lapply(readLines("2022/data/input03.txt"), \(x) (utf8ToInt(x)-38) %% 58)
+items <- readLines("input.txt") |>
+  lapply(\(x) (utf8ToInt(x) - 38) %% 58)
 
 # Part 1
-sum(sapply(items, \(x) Reduce(intersect, split(x, seq(x) <= length(x)/2))))
+items |>
+  sapply(\(x) Reduce(intersect, split(x, seq(x) <= length(x)/2))) |> 
+  sum()
 
 # Part 2
-sum(sapply(split(items, (seq(length(items)) - 1) %/% 3), \(x) Reduce(intersect, x)))
+split(items, (seq(length(items)) - 1) %/% 3) |>
+  sapply(\(x) Reduce(intersect, x)) |>
+  sum()
