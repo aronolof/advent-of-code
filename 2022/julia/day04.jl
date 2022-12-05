@@ -13,7 +13,7 @@ end
 
 part02 = function(input_path)
     a, b, c, d  = parse_input(input_path)
-    sum((b .>= c) .& (b .<= d) .| (a .<= d) .& (b .>= d))
+    sum((b .>= c) .& (a .<= d))
 end
 
 println("Answer 1: ", part01("2022/data/input04.txt"))
