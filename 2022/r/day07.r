@@ -1,39 +1,36 @@
 # --- Day 7: No Space Left On Device ---
-input <- tibble(x = readLines("2022/data/input07.txt")) %>%
-  separate(x, into=c('a', 'b', 'c'), sep=' ', fill = 'right') %>%
-  select(a, b, c) %>%
-  mutate(path = NA)
+library(tidyverse)
 
-pointer <- NULL
-for(i in seq(nrow(input))) {
-  if(input$b[i] == 'cd' & input$c[i] != '..') pointer <- c(pointer, input$c[i])
-  if(input$b[i] == 'cd' & input$c[i] == '..') pointer <- head(pointer, -1)
-  input$path[i] <- paste(pointer, collapse='/')
+df <- read_delim('2022/data/input07.txt', delim = ' ',
+                 col_names = c('file_size', 'x', 'y'),
+                 col_types = 'icc') %>%
+  mutate(full_path = NA)
+
+folder_path <- NULL
+
+for(i in 1:nrow(df)) {
+  if(df$x[i] == 'cd' & df$y[i] != '..') folder_path <- c(folder_path, df$y[i])
+  if(df$x[i] == 'cd' & df$y[i] == '..') folder_path <- head(folder_path, -1)
+  df$full_path[i] <- paste(folder_path, collapse='/')
 }
-size = input %>%
-  mutate(size = as.integer(str_extract(a, '[0-9]*'))) %>%
-  mutate(size = pmax(size, 0, na.rm=TRUE)) %>%
-  group_by(path) %>%
-  summarise(folder_size = sum(size, na.rm=T))
 
-size$nested_size <-
-  sapply(size$path, \(x) {
-    size %>% filter(str_detect(path, paste0('^', x, '.'))) %>% mutate(total=folder_size) %>% pull(total) %>% sum(na.rm=T)
-  })
+df <- df %>%
+  group_by(full_path) %>%
+  summarise(files_size = sum(file_size, na.rm=T)) %>%
+  mutate(nested_files_size = sapply(full_path, \(x) {
+    filter(., grepl(paste0('^', x, '.'), full_path)) %>%
+      summarise(sum(files_size)) %>%
+      pull()
+  })) %>%
+  mutate(total_size = files_size + nested_files_size)
 
 # Part 1
-size %>%
-  arrange(path) %>%
-  mutate(total_size = folder_size + nested_size) %>%
+df %>%
   filter(total_size <= 100000) %>%
-  arrange(path) %>%
-  pull(total_size) %>% sum()
+  summarise(sum(total_size))
 
 # Part 2
-size %>%
-  arrange(path) %>%
-  mutate(total_size = folder_size + nested_size) %>%
-  filter(total_size >= 30000000-(70000000-size$nested_size[1])) %>%
-  pull(total_size) %>%
-  min()
+df %>%
+  filter(total_size >= max(total_size)-40000000) %>%
+  summarise(min(total_size))
 
