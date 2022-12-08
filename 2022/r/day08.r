@@ -1,10 +1,10 @@
 # --- Day 8: Treetop Tree House ---
 m <- readLines("2022/data/input08.txt") |>
-  sapply(\(x) as.integer(strsplit(x, '')[[1]])) %>%
+  sapply(\(x) as.integer(strsplit(x, '')[[1]])) |>
   unname()
 
-visibility = m^0
-score = m * 0
+visibility <- m^0
+score <- m * 0
 
 for (i in 2:(nrow(m) - 1)) {
   for (j in 2:(ncol(m) - 1)) {
@@ -20,12 +20,10 @@ for (i in 2:(nrow(m) - 1)) {
       sapply(\(x) max(x) < m[i,j]) |>
       any()
     
-    score[i,j]  <-
-      surrounding_trees |>
+    score[i,j] <- surrounding_trees |>
       lapply(\(x) cumsum(m[i,j] <= x)) |>
       sapply(\(x) sum(x == max(x))) |>
       prod()
-    
   }
 }
 
