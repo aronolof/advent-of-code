@@ -1,6 +1,6 @@
 # --- Day 2: Rock Paper Scissors ---
 
-input <- read.table("2022/data/input02.txt", sep=" ")
+input <- read.table("2022/data/input02.txt", sep = " ")
 
 # Part 1
 apply(input, 1, \(x) {

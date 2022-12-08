@@ -8,15 +8,15 @@ df <- read_delim('2022/data/input07.txt', delim = ' ',
 
 folder_path <- NULL
 
-for(i in 1:nrow(df)) {
-  if(df$x[i] == 'cd' & df$y[i] != '..') folder_path <- c(folder_path, df$y[i])
-  if(df$x[i] == 'cd' & df$y[i] == '..') folder_path <- head(folder_path, -1)
-  df$full_path[i] <- paste(folder_path, collapse='/')
+for (i in 1:nrow(df)) {
+  if (df$x[i] == 'cd' & df$y[i] != '..') folder_path <- c(folder_path, df$y[i])
+  if (df$x[i] == 'cd' & df$y[i] == '..') folder_path <- head(folder_path, -1)
+  df$full_path[i] <- paste(folder_path, collapse = '/')
 }
 
 df <- df %>%
   group_by(full_path) %>%
-  summarise(files_size = sum(file_size, na.rm=T)) %>%
+  summarise(files_size = sum(file_size, na.rm = T)) %>%
   mutate(nested_files_size = sapply(full_path, \(x) {
     filter(., grepl(paste0('^', x, '.'), full_path)) %>%
       summarise(sum(files_size)) %>%
@@ -31,6 +31,6 @@ df %>%
 
 # Part 2
 df %>%
-  filter(total_size >= max(total_size)-40000000) %>%
+  filter(total_size >= max(total_size) - 40000000) %>%
   summarise(min(total_size))
 
