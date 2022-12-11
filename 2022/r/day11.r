@@ -1,63 +1,43 @@
-library(stringr)
+# --- Day 11: Monkey in the Middle ---
 
 input <- readLines("2022/data/input11.txt") 
-sep <- cumsum(grepl('Monkey', input))
+input_list <- split(input, cumsum(grepl('Monkey', input)))
 
-state = split(input, sep)
+state <- lapply(input_list, \(x) {
+  list(n_inspections = 0,
+       items = as.numeric(strsplit(gsub('  Starting items: ', '', x[2]), ',')[[1]]),
+       operation = gsub('  Operation: new = ', '', x[3]),
+       test = as.integer(gsub('  Test: divisible by ', '', x[4])),
+       true = as.integer(gsub('    If true: throw to monkey ', '', x[5])),
+       false = as.integer(gsub('    If false: throw to monkey ', '', x[6])))
+})
 
-# Prep
-for (i in seq(state)) {
-  state[[i]][7] <- list(state[[i]][2] |>
-    str_replace('  Starting items: ', '') |>
-    str_split(',') |>
-    sapply(as.numeric, simplify = T) |>
-    as.vector())
-  
-  state[[i]][3] <- str_replace(state[[i]][3], '  Operation: new = ', '')
-  
-  state[[i]][4] <- str_replace(state[[i]][4], '  Test: divisible by ', '') |>
-    as.integer()
-  
-  state[[i]][5] <- str_replace(state[[i]][5], '    If true: throw to monkey ', '') |>
-    as.integer()
-  
-  state[[i]][6] <- str_replace(state[[i]][6], '    If false: throw to monkey ', '') |>
-    as.integer()
-  
-  state[[i]][1]  <- 0
-}
-
-# Monkey business
 for (round in 1:20) {
   for (i in seq(state)) {
-    
-    if (length(state[[i]][7][[1]]) > 0) {
-      for (j in seq(length(state[[i]][7][[1]]))) {
+    print(paste(round, i))
+    if (length(state[[i]]$items) > 0) {
+      for (j in seq(length(state[[i]]$items))) {
         
-        item = state[[i]][[7]][j]
-        new_worry <- str_replace_all(state[[i]][[3]], 'old', as.character(item)) |>
+        item = state[[i]]$items[j]
+        new_worry <- gsub('old', as.character(item), state[[i]]$operation) |>
           parse(text = _) |>
           eval()
         
         new_worry <- new_worry %/% 3
-        is_divisible <- (new_worry %% state[[i]][[4]]) == 0
+        is_divisible <- (new_worry %% state[[i]]$test) == 0
         
         if (is_divisible) {
-          throw_to <- state[[i]][[5]] + 1
-          state[[throw_to]][7][[1]] <- append(state[[throw_to]][7][[1]], new_worry)
+          throw_to <- state[[i]]$true + 1
         } else {
-          throw_to <- state[[i]][[6]] + 1
-          state[[throw_to]][7][[1]] <- append(state[[throw_to]][7][[1]], new_worry)
+          throw_to <- state[[i]]$false + 1
         }
-        state[[i]][[1]] <- state[[i]][[1]] + 1
+        state[[throw_to]]$items <- append(state[[throw_to]]$items, new_worry)
+        state[[i]]$n_inspections <- state[[i]]$n_inspections + 1
       }
-      state[[i]][[7]] <- c()
+      state[[i]]$items <- NULL
     }
-
   }
 }
-
-# Part 2
-sapply(seq(state), \(i) state[[i]][[1]]) |>
-  sort(decreasing = T) |> head(2) |> prod()
+# Part 1
+sapply(seq(state), \(i) state[[i]][[1]]) |> sort(decreasing = T) |> head(2) |> prod()
 
