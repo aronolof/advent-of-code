@@ -1,3 +1,5 @@
+# --- Day 15: Beacon Exclusion Zone ---
+
 #input <- readLines("2022/data/test15.txt")
 input <- readLines("2022/data/input15.txt")
 
