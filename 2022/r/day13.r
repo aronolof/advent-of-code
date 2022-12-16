@@ -1,45 +1,45 @@
+# --- Day 13: Distress Signal ---
 input <- readLines("2022/data/input13.txt")[c(T,T,F)] |>
   lapply(\(x) {
-    gsub(']', ')', gsub('\\[', 'list(', x)) |>
+    gsub('\\[', 'list(', x) |>
+    gsub(']', ')', x = _) |>
     parse(text = _) |>
     eval()
     })
 
-comparisons <- function(x1, x2) {
-  lengths <- c(length(x1), length(x2))
-  if (sum(lengths) == 0) return('')
-  for (i in seq(max(lengths))) {
-    if (i > length(x1)) return('right')
-    if (i > length(x2)) return('wrong')
-    if (typeof(x1[[i]]) == 'double' & typeof(x2[[i]]) == 'double') {
-      if (x1[[i]] < x2[[i]]) return('right')
-      if (x1[[i]] > x2[[i]]) return('wrong')
+packet_comparison <- function(x, y) {
+  if (length(x) + length(y) == 0) return(NULL)
+  
+  for (i in seq(max(c(length(x), length(y))))) {
+    
+    if (i > length(x)) return(TRUE)
+    if (i > length(y)) return(FALSE)
+    
+    if (typeof(x[[i]]) == 'double' & typeof(y[[i]]) == 'double') {
+      if (x[[i]] < y[[i]]) return(TRUE)
+      if (x[[i]] > y[[i]]) return(FALSE)
+      if (x[[i]] == y[[i]]) next
       
-      if (x1[[i]] == x2[[i]]) next
+    } else if (typeof(x[[i]]) == 'list' & typeof(y[[i]]) == 'list') {
+      result <- packet_comparison(x[[i]], y[[i]])
+      
+    } else if (typeof(x[[i]]) == 'list' & typeof(y[[i]]) == 'double') {
+      result <- packet_comparison(x[[i]], list(y[[i]]))
+      
+    } else if (typeof(x[[i]]) == 'double' & typeof(y[[i]]) == 'list') {
+      result <- packet_comparison(list(x[[i]]), y[[i]])
     }
     
-    if (typeof(x1[[i]]) == 'list' & typeof(x2[[i]]) == 'list') {
-      result <- comparisons(x1[[i]], x2[[i]])
-      if (result == '') next
-      return(result)
-    }
-    
-    if (typeof(x1[[i]]) == 'list' & typeof(x2[[i]]) == 'double') {
-      result <- comparisons(x1[[i]], list(x2[[i]]))
-      if (result == '') next
-      return(result)
-    }
-    
-    if (typeof(x1[[i]]) == 'double' & typeof(x2[[i]]) == 'list') {
-      result <- comparisons(list(x1[[i]]), x2[[i]])
-      if (result == '') next
+    if (is.null(result)) {
+      next
+    } else {
       return(result)
     }
   }
-  return('')
+  return(NULL)
 }
 
-(sapply(seq(1, length(input), 2), \(p) comparisons(input[[p]], input[[p + 1]])) == 'right') %>%
+(sapply(seq(1, length(input), 2), \(p) packet_comparison(input[[p]], input[[p + 1]]))) %>%
   which() %>%
   sum()
 
@@ -52,6 +52,6 @@ dividers <- c('[[2]]', '[[6]]') |>
   })
 
 prod(
-  sum(sapply(append(input, dividers[[2]]), \(x) comparisons(dividers[[1]], x)) == 'wrong') + 1,
-  sum(sapply(append(input, dividers[[1]]), \(x) comparisons(dividers[[2]], x)) == 'wrong') + 1
+  sum(sapply(append(input, dividers[[2]]), \(x) packet_comparison(x, dividers[[1]]))) + 1,
+  sum(sapply(append(input, dividers[[1]]), \(x) packet_comparison(x, dividers[[2]]))) + 1
 )

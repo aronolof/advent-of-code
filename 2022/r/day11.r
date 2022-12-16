@@ -35,7 +35,7 @@ for (round in 1:20) {
         } else {
           throw_to <- state[[i]]$false + 1
         }
-        state[[throw_to]]$items <- append(state[[throw_to]]$items, worry_level)
+        state[[throw_to]]$items[length(state[[throw_to]]$items) + 1] <- worry_level
         state[[i]]$n_inspections <- state[[i]]$n_inspections + 1
       }
       state[[i]]$items <- NULL
@@ -71,7 +71,7 @@ for (round in seq(10000)) {
         } else {
           throw_to <- state[[i]]$false + 1
         }
-        state[[throw_to]]$items <- append(state[[throw_to]]$items, worry_level)
+        state[[throw_to]]$items[length(state[[throw_to]]$items) + 1] <- worry_level
         state[[i]]$n_inspections <- state[[i]]$n_inspections + 1
       }
       state[[i]]$items <- NULL
