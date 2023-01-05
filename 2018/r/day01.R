@@ -1,5 +1,5 @@
 # --- Day 1: Chronal Calibration ---
-input <- as.numeric(readLines('2018/input/input-01'))
+input <- as.numeric(readLines('2018/data/input01.txt'))
 
 # Part 1
 sum(input)

@@ -4,7 +4,7 @@ library(tidyr)
 library(stringr)
 library(lubridate)
 
-input <- readLines('2018/input/input-04')
+input <- readLines('2018/data/input04.txt')
 
 # Part 1
 df <- as_tibble(do.call(rbind, strsplit(gsub('\\[', '', input), '\\] ')))
