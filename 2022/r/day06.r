@@ -1,3 +1,5 @@
+# --- Day 6: Tuning Trouble ---
+
 input <- strsplit(readLines("2022/data/input06.txt"), '')[[1]]
 
 find_marker <- \(input, size) {
