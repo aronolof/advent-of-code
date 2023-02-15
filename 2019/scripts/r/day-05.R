@@ -10,35 +10,29 @@ run_prog <- function(prog, input) {
     mode <- sapply(2:4, \(x) (prog[i] %% (10^(x + 1))) %/% (10^x))
     
     par <- function(n) {
-      ifelse(mode[n], prog[i + n], prog[prog[i + n] + 1])
+      if (mode[n] == 0) return(prog[prog[i + n] + 1])
+      if (mode[n] == 1) return(prog[i + n])
     }
     
     if (op %in% c(1:2, 7:8)) {
-      # params = 3
+      # n_params: 3
       prog[prog[i + 3] + 1] <- do.call(c("sum", "prod", "<", "==")[[which(op == c(1,2,7,8))]],
                                        list(par(1), par(2)))
-      if (prog[i + 3] + 1 == i) {
-        i <- prog[i + 3] + 1
-      } else {
-        i <- i + 4
-      }
+      i <- i + 4
       
     } else if (op == 3) {
-      # params = 1
+      # n_params: 1
       prog[prog[i + 1] + 1] <- input
-      if (prog[i + 1] + 1 == i) {
-        i <- prog[i + 1] + 1
-      } else {
-        i <- i + 2
-      }
+      i <- i + 2
       
     } else if (op == 4) {
-      # params = 1
-      print(ifelse(mode[1], prog[i + 1], prog[prog[i + 1] + 1]))
+      # n_params: 1
+      if (mode[1] == 0) print(prog[prog[i + 1] + 1])
+      if (mode[1] == 1) print(prog[i + 1])
       i <- i + 2
       
     } else if (op %in% 5:6) {
-      # params = 2
+      # n_params: 2
       if (do.call(c("!=", "==")[[which(op == c(5:6))]], list(par(1), 0))) {
         i <- par(2) + 1
       } else {
@@ -48,7 +42,7 @@ run_prog <- function(prog, input) {
     } else if (op == 99) {
       break
     } else {
-      stop()
+      stop("Opcode error")
     }
   }
 }
