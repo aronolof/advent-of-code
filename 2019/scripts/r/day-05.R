@@ -1,18 +1,20 @@
 # --- Day 5: Sunny with a Chance of Asteroids ---
+input <- scan("2019/input/input-05.txt", sep = ",")
 
 # My brand new Intcode computer
 run_prog <- function(prog, input) {
+  
+  par <- function(n) {
+    if (mode[n] == 0) return(prog[prog[i + n] + 1])
+    if (mode[n] == 1) return(prog[i + n])
+  }
+  
   i <- 1
   
   while (i <= length(prog)) {
     
     op <- prog[i] %% 100
     mode <- sapply(2:4, \(x) (prog[i] %% (10^(x + 1))) %/% (10^x))
-    
-    par <- function(n) {
-      if (mode[n] == 0) return(prog[prog[i + n] + 1])
-      if (mode[n] == 1) return(prog[i + n])
-    }
     
     if (op %in% c(1:2, 7:8)) {
       # n_params: 3
@@ -46,8 +48,6 @@ run_prog <- function(prog, input) {
     }
   }
 }
-
-input <- scan("2019/input/input-05.txt", sep = ",")
 
 # Part 1
 run_prog(input, 1)
