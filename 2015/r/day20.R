@@ -12,23 +12,15 @@ find_lowest <- function(n) {
     }
   }
   
-  best_answer <- Inf
-  #maxn <- min(2, n %/% 10)
   divisors = rep(0, maxn)
-  
+
   for (i in seq(1, maxn)) {
     for (j in seq(i, maxn, i)) {
       divisors[j] <- divisors[j] + i * 10
-      
-      if (j < best_answer && divisors[j] >= n) {
-        best_answer <- j
-        #print(best_answer)
-        if (i == j) return(best_answer)
-      }
+      if (i == j && divisors[j] >= n) return(j)
     }
   }
-  return(which(divisors >= n)[1])
 }
 
 # Part 1
-find_lowest(33100000)
+find_lowest(331000)
