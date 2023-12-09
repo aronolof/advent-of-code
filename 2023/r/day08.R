@@ -3,20 +3,26 @@
 input <- readLines("2023/data/input08.txt")
 
 # Part 1
-nodes <- input[-(1:2)] |>
-  substr(8, 15) |>
-  strsplit(', ')
+network <- sapply(c(1, 8, 13), \(i) substr(input[-1:-2], i, i + 2))
+path <- (strsplit(input[1], '')[[1]] == 'R') + 2
 
-names(nodes) <- substr(input, 1, 3)[-(1:2)]
-steps <- (strsplit(input[1], '')[[1]] == 'R') + 1
-
-i <- 0
-pos <- 'AAA'
-
-while (TRUE) {
-  j <- (i %% length(steps)) + 1
-  pos <- a[[pos]][steps[j]]
-  i <- i + 1
-  if(pos == 'ZZZ') break
+n_steps <- function(start_node, end_node) {
+  i <- 1
+  node <- start_node
+  repeat {
+    node <- network[network[, 1] == node, path[((i - 1) %% length(path)) + 1]]
+    if (grepl(end_node, node)) return(i)
+    i <- i + 1
+  }
 }
-i
+n_steps('AAA', 'ZZZ')
+
+# Part 2
+gcd <- \(a, b) ifelse(b == 0, a, gcd(b, a %% b))
+lcm <- \(a, b) a * b / gcd(a, b)
+
+mapply(n_steps,
+       network[grepl('..A', network[, 1]), 1],
+       '..Z') |>
+  Reduce(lcm, x = _) |>
+  format(scientific = FALSE)
