@@ -1,39 +1,28 @@
 # --- Day 11: Cosmic Expansion ---
 input <- readLines("2023/data/input11.txt")
 
-# Part 1
-space <- sapply(strsplit(input, ''), \(x) x) |>
-  apply(1, \(x) {
-    if (all(x == '.')) return(unname(rbind(x, x)))
-    x
-  }) |>
-  do.call(rbind, args = _) |>
-  apply(2, \(x) {
-    if (all(x == '.')) return(unname(rbind(x, x)))
-    x
-  }) |>
-  do.call(rbind, args = _)
+space <- do.call(rbind, strsplit(input, ''))
+exp_rows <- which(rowSums(space != '.') == 0)
+exp_cols <- which(colSums(space != '.') == 0)
 
-b <- which(space == '#', arr.ind = TRUE)
+galaxy_pairs <- which(space == '#', arr.ind = TRUE) |>
+  (\(x) cbind(x, id = seq(nrow(x))))() |>
+  (\(x) merge(x, x, by = NULL))() |>
+  (\(x) x[x['id.x'] > x['id.y'],])()
 
-r <- apply(b, 1, \(x) abs(b[,1] - x[1]) + abs(b[,2] - x[2])) 
-sum(r[row(r) > col(r)])
+result <- apply(galaxy_pairs, 1, \(x) {
+
+    all_steps <- unname(abs(x['row.x'] - x['row.y']) + abs(x['col.x'] - x['col.y']))
+    
+    expanded_steps <- length(c(exp_rows[exp_rows %in% x['row.x']:x['row.y']],
+                               exp_cols[exp_cols %in% x['col.x']:x['col.y']]))
+    
+    c(all_steps - expanded_steps, expanded_steps)
+    
+  })
+
+sum(result[1,] + result[2,] * 2)
 
 # Part 2
-space <- do.call(rbind, strsplit(input, '')) |>
-  (\(x) x == '.')() |>
-  apply(1, \(x) x + rep(all(x), length(x))) |>
-  apply(1, \(x) x + rep(all(x), length(x)))
-
-b1 <- which(space == 0, arr.ind = TRUE)
-
-mult <- (1000000-1)
-
-merge(b1, b1, by = NULL) |>
-  apply(1, \(x) {
-    x1 <- space[x[1]:x[3], x[2]:x[4], drop = FALSE]
-    sum(1 + mult * (x1[row(x1) == 1 | col(x1) == 1] >= 2)) - 1
-}) |>
-  sum() |>
-  prod(0.5)
+sum(result[1,] + result[2,] * 1000000)
 
