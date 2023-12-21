@@ -1,3 +1,5 @@
+# --- Day 15: Lens Library ---
+
 input <- scan("2023/data/input15.txt", what = character(), sep = ',') 
 
 # Part 1

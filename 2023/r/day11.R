@@ -1,6 +1,7 @@
 # --- Day 11: Cosmic Expansion ---
 input <- readLines("2023/data/input11.txt")
 
+# Part 1
 space <- do.call(rbind, strsplit(input, ''))
 exp_rows <- which(rowSums(space != '.') == 0)
 exp_cols <- which(colSums(space != '.') == 0)
