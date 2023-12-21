@@ -1,4 +1,4 @@
-# --- Day 12: Hot Springs ---
+# --- Day 13: Point of Incidence ---
 input <- readLines("2023/data/input13.txt")
 
 # Part 1
