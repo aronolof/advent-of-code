@@ -23,3 +23,29 @@ sapply(seeds, \(x) {
 }) |>
   min()
 
+# Part 2 (work in progress)
+seeds |>
+  matrix(ncol = 2) |>
+  apply(2, \(x) x[1] + seq(x[2]) - 1) |>
+  unlist() |>
+  sapply(\(x) {
+  new <- x
+  for (i in unique(m2[,1])) {
+    matches <- (m2[,1] == i) & (new >= m2[,3]) & (new <= m2[,3] + m2[,4] - 1)
+    w <- which(matches)
+    if (length(w) > 0) new <- new + diff(m2[w,3:2])
+  }
+  new
+}) |>
+  min()
+
+check_seed <- function(seeds) {
+  sapply(seeds, \(x) {
+    new <- x
+    for (i in unique(m2[,1])) {
+      matches <- (m2[,1] == i) & (new >= m2[,3]) & (new <= m2[,3] + m2[,4] - 1)
+      w <- which(matches)
+      if (length(w) > 0) new <- new + diff(m2[w,3:2])
+    }
+  }
+}
