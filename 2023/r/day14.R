@@ -23,7 +23,7 @@ tilt <- function(platform, m, d) {
 # Part 2
 platform <- input
 load_history <- c()
-for(i in 1:400) {
+for(i in 1:150) {
   platform <- tilt(platform, 2, TRUE) # North
   platform <- tilt(platform, 1, TRUE) |> t() # West
   platform <- tilt(platform, 2, FALSE) # South
@@ -36,10 +36,12 @@ for(i in 1:400) {
 
 # plot(tail(load_history, 100), type ='l')
 
-cycle_length <- which(score == tail(load_history, 1)) |>
+cycle_length <- which(load_history == tail(load_history, 1)) |>
   diff() |>
   tail(1)
 
-score[seq(1000000000 %% cycle_length, length(score), cycle_length)] |>
+which(load_history == load_history[150]) |> diff()
+
+load_history[seq(1000000000 %% cycle_length, length(load_history), cycle_length)] |>
   tail(1)
 
